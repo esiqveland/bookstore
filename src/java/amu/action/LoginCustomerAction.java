@@ -39,13 +39,13 @@ class LoginCustomerAction implements Action {
                             return new ActionResponse(ActionResponseType.REDIRECT, request.getParameter("from"));
                         }
                     } else { // Wrong password
-                        messages.put("password", "Password was incorrect.");
+                        messages.put("email", "Email or password was incorrect.");
                     }
                 } else { // customer.getActivationToken() != null
                     return new ActionResponse(ActionResponseType.REDIRECT, "activateCustomer");
                 }
             } else { // findByEmail returned null -> no customer with that email exists
-                messages.put("email", "Email was incorrect.");
+                messages.put("email", "Email or password was incorrect.");
             }
 
             // Forward to login form with error messages

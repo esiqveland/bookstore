@@ -17,19 +17,24 @@ class PlaceOrderAction implements Action {
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-            return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
-        }
-        
         Customer customer = (Customer) session.getAttribute("customer");
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
             actionResponse.addParameter("from", "placeOrder");
             return actionResponse;
         }
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+            return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
+        }
+
+        if(cart.getNumberOfItems() == 0 || cart.getSubtotal() < 0.0) {
+            return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
+        }
+
 
         OrderDAO orderDAO = new OrderDAO();
         Order order = new Order(customer, cart.getShippingAddress(), cart.getSubtotal().toString());

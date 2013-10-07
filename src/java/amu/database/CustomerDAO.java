@@ -99,22 +99,19 @@ public class CustomerDAO {
 
         DataSource dataSource = null;
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
 
         try {
             connection = Database.getConnection();
-            statement = connection.createStatement();
 
-            String query = "INSERT INTO customer (email, password, name, activation_token) VALUES ('"
-                    + customer.getEmail()
-                    + "', '"
-                    + customer.getPassword()
-                    + "', '"
-                    + customer.getName()
-                    + "', '"
-                    + customer.getActivationToken()
-                    + "')";
-            statement.executeUpdate(query);
+            String query = "INSERT INTO customer (email, password, name, activation_token) VALUES ('?', '?', '?', '?')";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,customer.getEmail());
+            statement.setString(2, customer.getPassword());
+            statement.setString(3, customer.getName());
+            statement.setString(4, customer.getActivationToken());
+
+            statement.executeUpdate();
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "register SQL Query: " + query);
 
         } catch (SQLException exception) {
@@ -128,17 +125,17 @@ public class CustomerDAO {
 
     public Customer activate(Customer customer) {
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
             connection = Database.getConnection();
-            statement = connection.createStatement();
 
-            String query = "UPDATE customer SET activation_token=NULL WHERE email='"
-                    + customer.getEmail()
-                    + "'";
-            statement.executeUpdate(query);
+            String query = "UPDATE customer SET activation_token=NULL WHERE email=?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, customer.getEmail());
+
+            statement.executeUpdate();
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "activate SQL Query: " + query);
 
             customer.setActivationToken(null);

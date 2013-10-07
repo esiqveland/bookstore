@@ -29,7 +29,7 @@ class DeleteCreditCardAction implements Action {
             List<String> messages = new ArrayList<String>();
             request.setAttribute("messages", messages);
 
-            if (creditCardDAO.delete(Integer.parseInt(request.getParameter("id")), )) {
+            if (creditCardDAO.delete(Integer.parseInt(request.getParameter("id")), customer)) {
                 return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
             }
 
@@ -37,7 +37,7 @@ class DeleteCreditCardAction implements Action {
         }
 
         // (request.getMethod().equals("GET")) 
-        creditCard = creditCardDAO.read(Integer.parseInt(request.getParameter("id")), );
+        creditCard = creditCardDAO.read(Integer.parseInt(request.getParameter("id")), customer);
         request.setAttribute("creditCard", creditCard);
         return new ActionResponse(ActionResponseType.FORWARD, "deleteCreditCard");
     }

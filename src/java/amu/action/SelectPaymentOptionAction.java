@@ -15,19 +15,20 @@ class SelectPaymentOptionAction implements Action {
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
         Customer customer = (Customer) session.getAttribute("customer");
-
-        if (cart == null) {
-            return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
-        }
-
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
             actionResponse.addParameter("from", "selectPaymentOption");
             return actionResponse;
         }
-        
+
+        Cart cart = (Cart) session.getAttribute("cart");
+
+        if (cart == null) {
+            return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");
+        }
+
+
         if (cart.getShippingAddress() == null) {
             return new ActionResponse(ActionResponseType.REDIRECT, "selectShippingAddress");
         }
@@ -36,8 +37,11 @@ class SelectPaymentOptionAction implements Action {
         
         // Handle credit card selection submission
         if (request.getMethod().equals("POST")) {
-            cart.setCreditCard(creditCardDAO.read(Integer.parseInt(request.getParameter("creditCardID")), ));
-            return new ActionResponse(ActionResponseType.REDIRECT, "reviewOrder");
+            CreditCard creditCard = creditCardDAO.read(Integer.parseInt(request.getParameter("creditCardID")), customer);
+            if(creditCard !=null) {
+                cart.setCreditCard(creditCard);
+                return new ActionResponse(ActionResponseType.REDIRECT, "reviewOrder");
+            }
         }
         
         List<CreditCard> creditCards = creditCardDAO.browse(customer);

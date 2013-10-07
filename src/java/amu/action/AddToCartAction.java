@@ -26,8 +26,8 @@ class AddToCartAction implements Action {
         {
             BookDAO bookDAO = new BookDAO();
             Book book = bookDAO.findByISBN(request.getParameter("isbn"));
-            
-            cart.addItem(new CartItem(book, Integer.parseInt(request.getParameter("quantity"))));
+            if(book !=null)
+                cart.addItem(new CartItem(book, Integer.parseInt(request.getParameter("quantity"))));
         }
 
         return new ActionResponse(ActionResponseType.REDIRECT, "viewCart");

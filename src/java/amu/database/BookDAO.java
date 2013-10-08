@@ -26,6 +26,7 @@ public class BookDAO {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "findByISBN SQL Query: " + query);
             
             if (resultSet.next()) {
+                ReviewDAO reviewDAO = new ReviewDAO();
                 AuthorDAO authorDAO = new AuthorDAO(); // TODO:
                 
                 book = new Book();
@@ -40,6 +41,7 @@ public class BookDAO {
                 book.setDescription(resultSet.getString("book.description"));
                 book.setAuthor(authorDAO.findByBookID(resultSet.getInt("book.id")));
                 book.setPrice(resultSet.getFloat("book.price"));
+                book.setReviews(reviewDAO.getReviewsByBook(book));
                 // TODO: Reviews, Categories
             }
         } catch (SQLException exception) {

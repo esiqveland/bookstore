@@ -14,7 +14,8 @@ public class Book implements Serializable {
     private String isbn10;
     private String isbn13;
     private String description;
-    private float price; 
+    private float price;
+    private List<Review> reviews;
 
     public int getId() {
         return id;
@@ -102,5 +103,13 @@ public class Book implements Serializable {
 
     public void setEdition(int edition) {
         this.edition = edition;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

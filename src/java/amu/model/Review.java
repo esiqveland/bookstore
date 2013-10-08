@@ -7,6 +7,7 @@ public class Review {
     private int id;
     private Book book;
     private Customer author;
+    private String content;
     private int score;
     List<Votes> votes;
 
@@ -58,5 +59,13 @@ public class Review {
 
     public void setVotes(List<Votes> votes) {
         this.votes = votes;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

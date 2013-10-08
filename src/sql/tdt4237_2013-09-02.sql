@@ -6411,6 +6411,26 @@ VALUES
 /*!40000 ALTER TABLE `author_x_book` ENABLE KEYS */;
 UNLOCK TABLES;
 
+# Dump of table review
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `review`;
+CREATE TABLE `review` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `isbn13` char(13) NOT NULL DEFAULT '',
+  `content` text,
+  `score` int(10),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `review` WRITE;
+
+INSERT INTO `review` (`id`, `isbn13`, `content`, `score`)
+VALUES
+  (1,'9788251909518', 'Awesome book', 0),
+  (1,'9788251909518', 'Horrible horrible book', 0),
+  (1,'9788241707117', 'Great passion from the writer!', 0);
+
+UNLOCK TABLES;
 
 # Dump of table book
 # ------------------------------------------------------------

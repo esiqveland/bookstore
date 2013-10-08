@@ -37,6 +37,7 @@ public class ReviewDAO {
                 review.setAuthor(customerDAO.findByEmail(resultSet.getString("review.author_email")));
                 review.setBook(book);
                 review.setScore(resultSet.getInt("review.score"));
+                review.setContent(resultSet.getString("review.content"));
                 review.setVotes(new ArrayList<Votes>());
 
             }
@@ -74,6 +75,7 @@ public class ReviewDAO {
                 review.setAuthor(customerDAO.findByEmail(resultSet.getString("review.author_email")));
                 review.setBook(bookDAO.findByISBN(resultSet.getString("review.isbn13")));
                 review.setScore(resultSet.getInt("review.score"));
+                review.setContent(resultSet.getString("review.content"));
                 review.setVotes(new ArrayList<Votes>());
 
             }

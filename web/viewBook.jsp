@@ -32,6 +32,15 @@
                     <input type="submit" value="Add to cart" />
                 </form>
             </div>
+            <div>
+                <h3>Reviews:</h3>
+                <c:forEach items="${book.reviews}" var="review" varStatus="it">
+                    ${review.author.name} wrote:
+                    <div>
+                        ${review.content}
+                    </div>
+                </c:forEach>
+            </div>
         </c:otherwise>
     </c:choose>
 </div>

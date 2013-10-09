@@ -6427,8 +6427,8 @@ LOCK TABLES `review` WRITE;
 INSERT INTO `review` (`id`, `isbn13`, `content`, `score`)
 VALUES
   (1,'9788251909518', 'Awesome book', 0),
-  (1,'9788251909518', 'Horrible horrible book', 0),
-  (1,'9788241707117', 'Great passion from the writer!', 0);
+  (2,'9788251909518', 'Horrible horrible book', 0),
+  (3,'9788241707117', 'Great passion from the writer!', 0);
 
 UNLOCK TABLES;
 

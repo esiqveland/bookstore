@@ -33,13 +33,20 @@
                 </form>
             </div>
             <div>
-                <h3>Reviews:</h3>
-                <c:forEach items="${book.reviews}" var="review" varStatus="it">
-                    ${review.author.name} wrote:
-                    <div>
-                        ${review.content}
-                    </div>
-                </c:forEach>
+            <c:choose>
+                <c:when test="${empty book.reviews}">
+                    No reviews for this book!
+                </c:when>
+                <c:otherwise>
+                    <h3>Reviews:</h3>
+                    <c:forEach items="${book.reviews}" var="review" varStatus="it">
+                        ${review.author.name} wrote:
+                        <div>
+                            ${review.content}
+                        </div>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
             </div>
         </c:otherwise>
     </c:choose>

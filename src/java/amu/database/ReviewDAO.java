@@ -88,4 +88,50 @@ public class ReviewDAO {
 
         return reviews;
     }
+
+    public boolean voteForReview(int reviewId, Customer customer) {
+        // TODO: have we voted before?
+        // TODO: implement voting for a review
+        return true;
+    }
+
+    public Review getReviewsById(int reviewid) {
+        Review reviews = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = Database.getConnection();
+
+            String query = "SELECT * FROM review WHERE id=?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, reviewid);
+
+            resultSet = statement.executeQuery();
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, "reviewsById SQL Query: " + query);
+
+            if (resultSet.next()) {
+                CustomerDAO customerDAO = new CustomerDAO();
+                BookDAO bookDAO = new BookDAO();
+
+                Review review;
+                review = new Review();
+                review.setId(resultSet.getInt("review.id"));
+                review.setAuthor(customerDAO.findByEmail(resultSet.getString("review.author_email")));
+                review.setBook(bookDAO.findByISBN(resultSet.getString("review.isbn13")));
+                review.setScore(resultSet.getInt("review.score"));
+                review.setContent(resultSet.getString("review.content"));
+                review.setVotes(new ArrayList<Votes>());
+                reviews = review;
+
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
+        } finally {
+            Database.close(connection, statement, resultSet);
+
+        }
+
+        return reviews;
+    }
 }

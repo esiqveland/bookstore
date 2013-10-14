@@ -6417,6 +6417,7 @@ DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `isbn13` char(13) NOT NULL DEFAULT '',
+  `author_email` varchar(255) NOT NULL,
   `content` text,
   `score` int(10),
   PRIMARY KEY (`id`)
@@ -6424,11 +6425,11 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 
-INSERT INTO `review` (`id`, `isbn13`, `content`, `score`)
+INSERT INTO `review` (`id`, `isbn13`, `author_email`, `content`, `score`)
 VALUES
-  (1,'9788251909518', 'Awesome book', 0),
-  (2,'9788251909518', 'Horrible horrible book', 0),
-  (3,'9788241707117', 'Great passion from the writer!', 0);
+  (1,'9788251909518', 'test@test.com', 'Awesome book', 0),
+  (2,'9788251909518', 'test@test.com', 'Horrible horrible book', 0),
+  (3,'9788241707117', 'test@test.com', 'Great passion from the writer!', 0);
 
 UNLOCK TABLES;
 

@@ -33,11 +33,11 @@ public class ReviewDAO {
 
                 Review review;
                 review = new Review();
-                review.setId(resultSet.getInt("review.id"));
-                review.setAuthor(customerDAO.findByEmail(resultSet.getString("review.author_email")));
+                review.setId(resultSet.getInt("id"));
+                review.setAuthor(customerDAO.findByEmail(resultSet.getString("author_email")));
                 review.setBook(book);
-                review.setScore(resultSet.getInt("review.score"));
-                review.setContent(resultSet.getString("review.content"));
+                review.setScore(resultSet.getInt("score"));
+                review.setContent(resultSet.getString("content"));
                 review.setVotes(new ArrayList<Votes>());
 
             }

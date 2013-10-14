@@ -61,7 +61,7 @@ public class CreditCardDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "SELECT cc_number, expiry_date, cardholder_name FROM credit_card WHERE id=? customer_id=?";
+            String query = "SELECT cc_number, expiry_date, cardholder_name FROM credit_card WHERE id=? AND customer_id=?";
             statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             statement.setInt(2, customer.getId());

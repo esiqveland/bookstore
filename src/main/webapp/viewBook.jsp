@@ -39,10 +39,10 @@
                 </c:when>
                 <c:otherwise>
                     <h3>Reviews:</h3>
-                    <c:forEach items="${book.reviews}" var="review" varStatus="it">
-                        ${review.author.name} wrote:
+                    <c:forEach items="${book.reviews}" var="reviews" varStatus="it">
+                        <strong>${reviews.author.name} wrote:</strong>
                         <div>
-                            ${review.content}
+                            <em>${reviews.content}</em>
                         </div>
                     </c:forEach>
                 </c:otherwise>

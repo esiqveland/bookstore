@@ -1,6 +1,8 @@
 package amu.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Order {
     
@@ -10,6 +12,7 @@ public class Order {
     private Calendar createdDate;
     private String value;
     private int status;
+    private Cart cart;
     
     // TODO: Add OrderItems
 
@@ -30,6 +33,16 @@ public class Order {
         this.value = subtotal;
         this.status = 0;
     }
+    
+    public Order(Customer customer, Address address, String subtotal, Cart cart) {
+        this.id = null;
+        this.customer = customer;
+        this.address = address;
+        this.createdDate = null;
+        this.value = subtotal;
+        this.status = 0;
+        this.cart = cart;
+    }
 
     public Integer getId() {
         return id;
@@ -37,6 +50,10 @@ public class Order {
 
     public Customer getCustomer() {
         return customer;
+    }
+    
+    public Cart getCart(){
+    	return cart;
     }
 
     public Address getAddress() {

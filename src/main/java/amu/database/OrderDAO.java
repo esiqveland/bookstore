@@ -1,7 +1,9 @@
 package amu.database;
 
+import amu.model.CartItem;
 import amu.model.Customer;
 import amu.model.Order;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +56,7 @@ public class OrderDAO {
 	public boolean add(Order order) {
 
 		try {
-			connection = Database.getConnection();
+			connection = Database.getConnection();	
 
 			String query = "INSERT INTO `order` (customer_id, address_id, created, value, status) VALUES (?, ?, CURDATE(), ?, ?)";
 			statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -64,8 +67,36 @@ public class OrderDAO {
 			statement.executeUpdate();
 
 			resultSet = statement.getGeneratedKeys();
+			
+			connection.close();
+			
+			/*
+			 * Save order items
+			 */
+			
 			if (resultSet.next()) {
-				// TODO: Add OrderItems
+				
+				connection = Database.getConnection();
+				
+				Iterator<CartItem> it = order.getCart().getItems().values().iterator();
+				while (it.hasNext()) {
+					CartItem item = it.next();
+					query = "INSERT INTO `order_items` (order_id, book_id, quantity, price, status)"
+							+ " VALUES (?,?,?,?,?)";
+					statement = connection.prepareStatement(query);
+																		
+					statement.setInt(1, resultSet.getInt(1));	//Order_id		
+					statement.setInt(2, item.getBook().getId());		
+					statement.setInt(3, item.getQuantity());			
+					statement.setFloat(4, item.getBook().getPrice());	
+					statement.setInt(5, order.getStatus());	
+					
+					statement.executeUpdate();
+					
+					
+				}
+				connection.close();
+				
 				return true;
 			}
 		} catch (SQLException exception) {

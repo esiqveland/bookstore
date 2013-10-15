@@ -58,6 +58,9 @@ public class ReviewDAO {
     }
 
     public Review createReview(String isbn13, Customer author, String content) {
+        if(!bookExists(isbn13)) {
+            return null;
+        }
         Connection connection = null;
         PreparedStatement statement = null;
         int result = -1;
@@ -84,6 +87,15 @@ public class ReviewDAO {
             Database.close(connection, statement);
         }
         return getReviewById(result);
+    }
+
+    private boolean bookExists(String isbn13) {
+        BookDAO bookDAO = new BookDAO();
+        Book book = bookDAO.findByISBN(isbn13);
+        if(book != null) {
+            return true;
+        }
+        return false;
     }
 
     public boolean voteForReview(int reviewId, Customer customer) {

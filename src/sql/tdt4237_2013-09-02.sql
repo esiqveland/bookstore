@@ -8523,7 +8523,7 @@ CREATE TABLE `order` (
   `address_id` int(10) unsigned NOT NULL,
   `created` date NOT NULL,
   `value` decimal(10,2) NOT NULL,
-  `status` tinyint(3) unsigned NOT NULL,
+  `status` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer` (`customer_id`),
   KEY `shipping_address_id` (`address_id`),
@@ -8539,12 +8539,12 @@ CREATE TABLE `order` (
 DROP TABLE IF EXISTS `order_items`;
 
 CREATE TABLE `order_items` (
-  `order_item_id` int(10) unsigned NOT NULL,
+  `order_item_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned NOT NULL,
   `book_id` int(10) unsigned NOT NULL,
-  `quantity` tinyint(3) unsigned NOT NULL,
+  `quantity` tinyint(3) NOT NULL,
   `price` decimal(10,2) unsigned NOT NULL,
-  `status` tinyint(3) unsigned NOT NULL,
+  `status` tinyint(3) NOT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `order` (`order_id`),
   KEY `order_item` (`book_id`),

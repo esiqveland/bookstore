@@ -43,6 +43,11 @@ public class Order {
         this.status = 0;
         this.cart = cart;
     }
+    
+    public Order(int status, int id) {
+        this.id = null;
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;
@@ -84,6 +89,8 @@ public class Order {
                 return "Pending";
             case -1:
                 return "Canceled";
+            case -2:
+            	return "Counter-Order";
         }
     }
 }

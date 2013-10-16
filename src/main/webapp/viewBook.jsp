@@ -1,3 +1,6 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="container">
     <h1>Book</h1>
     <c:choose>
@@ -6,13 +9,13 @@
             <div class = "index-item"><a href="debug/list_books.jsp">List books</a></div>
         </c:when>
         <c:otherwise>
-            <h2>${book.title.name}</h2>
+            <h2><c:out value="${book.title.name}" /></h2>
             <div>
                 <ul>
                     <li>
                         <b>Authors:</b> 
                         <c:forEach items="${book.author}" var="author" varStatus="it">
-                            ${author.name}<c:if test="${!it.last}">, </c:if>
+                            <c:out value="${author.name}" /><c:if test="${!it.last}">, </c:if>
                         </c:forEach>
                     </li>
                     <li><b>Publisher:</b> ${book.publisher.name}</li>
@@ -23,7 +26,7 @@
                 </ul>
             </div>
             <div>
-                ${book.description}
+                <c:out value="${book.description}" />
             </div>
             <div>
                 <form action="addBookToCart.do" method="post">
@@ -41,9 +44,12 @@
                     <div>
                         <div><h3>Reviews:</h3></div>
                         <c:forEach items="${book.reviews}" var="reviews" varStatus="it">
-                            <strong>${reviews.author.name} wrote:</strong>
                             <div>
-                                <em>${reviews.content}</em>
+                            <a href="voteReview.do?id=${reviews.id}"><img style="height:16px" src="<c:url value="/img/upvote.png" />" /></a>
+                            <strong><c:out value="${reviews.author.name}" /> wrote (<c:out value="${reviews.score}" /> votes):</strong>
+                            </div>
+                            <div>
+                                <em><c:out value="${reviews.content}" /></em>
                             </div>
                         </c:forEach>
                     </div>

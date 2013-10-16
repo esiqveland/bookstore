@@ -99,9 +99,83 @@ public class ReviewDAO {
     }
 
     public boolean voteForReview(int reviewId, Customer customer) {
+        Review review = getReviewById(reviewId);
+        return voteForReview(review, customer);
+    }
+
+    public boolean voteForReview(Review review, Customer customer) {
         // TODO: have we voted before?
         // TODO: implement voting for a review
-        return true;
+
+        if(haveCustomerVotedBefore(review, customer)) {
+            return false;
+        }
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        boolean returnVal = true;
+        try {
+            connection = Database.getConnection();
+
+            String query = "INSERT INTO votes (value, review_id, customer_id) VALUES (?, ?, ?)";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, 1);
+            statement.setInt(2, review.getId());
+            statement.setInt(3, customer.getId());
+
+            statement.executeUpdate();
+
+            preparedStatement = updateReviewScore(review, connection, preparedStatement);
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, "voteForReview SQL Query: " + query);
+
+        } catch (SQLException exception) {
+            returnVal = false;
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
+        } finally {
+            Database.close(connection, statement);
+            Database.close(connection, preparedStatement);
+        }
+        return returnVal;
+    }
+
+    private PreparedStatement updateReviewScore(Review review, Connection connection, PreparedStatement preparedStatement) throws SQLException {
+        String scoreReviewQuery = "UPDATE review SET score=? WHERE id=?";
+        preparedStatement = connection.prepareStatement(scoreReviewQuery);
+        preparedStatement.setInt(1, review.getScore()+1);
+        preparedStatement.setInt(2, review.getId());
+
+        preparedStatement.executeUpdate();
+        review.setScore(review.getScore()+1);
+        return preparedStatement;
+    }
+
+    private boolean haveCustomerVotedBefore(Review review, Customer customer) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        boolean returnVal = false;
+        try {
+            connection = Database.getConnection();
+
+            String query = "SELECT * FROM votes WHERE review_id=? AND customer_id=?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, review.getId());
+            statement.setInt(2, customer.getId());
+
+            resultSet = statement.executeQuery();
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, "haveCustomerVotedBefore SQL Query: " + query);
+
+            if (resultSet.next()) {
+                returnVal = true;
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
+        } finally {
+            Database.close(connection, statement, resultSet);
+        }
+        return returnVal;
     }
 
     public Review getReviewById(int reviewid) {
@@ -115,6 +189,7 @@ public class ReviewDAO {
             String query = "SELECT * FROM review WHERE id=?";
             statement = connection.prepareStatement(query);
             statement.setInt(1, reviewid);
+
 
             resultSet = statement.executeQuery();
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "reviewsById SQL Query: " + query);

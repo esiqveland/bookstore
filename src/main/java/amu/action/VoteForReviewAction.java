@@ -21,12 +21,15 @@ public class VoteForReviewAction implements Action {
             return actionResponse;
         }
 
-        if (request.getMethod().equals("GET") && request.getParameter("review") != null) {
-            int voteforreview = Integer.parseInt(request.getParameter("review"));
+        if (request.getMethod().equals("GET") && request.getParameter("id") != null) {
+            int voteforreview = Integer.parseInt(request.getParameter("id"));
             ReviewDAO reviewDAO = new ReviewDAO();
             Review review = reviewDAO.getReviewById(voteforreview);
-            if (reviewDAO.voteForReview(voteforreview, customer)) {
-                return new ActionResponse(ActionResponseType.FORWARD, "bookNotFound");
+
+            if (reviewDAO.voteForReview(review, customer)) {
+                ActionResponse actionResponse = new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+                actionResponse.addParameter("isbn", review.getBook().getIsbn13());
+                return actionResponse;
             } else {
                 return new ActionResponse(ActionResponseType.FORWARD, "bookNotFound");
             }

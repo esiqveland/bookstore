@@ -47,8 +47,8 @@
                 <div>Value: ${order.value}</div>
                 <div>Status: ${order.statusText}</div>
                 <div>
-                    <a href="editOrder.do?id=${order.id}">Edit</a>
-                    <a href="cancelOrder.do?id=${order.id}">Delete</a>
+                    <span><a href="editOrder.do?id=${order.id}">Edit</a></span>
+                    <span><a href="deleteOrder.do?id=${order.id}">Delete</a></span>
                 </div>
                 
             </div>

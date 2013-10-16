@@ -112,6 +112,12 @@ public class OrderDAO {
 				statement.setInt(1, orderId);
 				statement.executeUpdate();
 				
+				//Update status field on old orderitems
+				query = "Update `order_items` SET status=-1 WHERE order_id=?";
+				statement = connection.prepareStatement(query);
+				statement.setInt(1, orderId);
+				statement.executeUpdate();
+				
 				query = "INSERT INTO `order` (`customer_id`, `address_id`, `created`, `value`, `status`) "
 						+ "VALUES(?,?,CURDATE(),?,?)";
 				statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -143,11 +149,7 @@ public class OrderDAO {
 					
 				}
 				
-				//Update status field on old orderitems
-				query = "Update `order_items` SET status=-1 WHERE order_id=?";
-				statement = connection.prepareStatement(query);
-				statement.setInt(1, orderId);
-				statement.executeUpdate();
+				
 				
 				return true;
 				}	
@@ -183,7 +185,7 @@ public class OrderDAO {
 							+ " VALUES (?,?,?,?,?)";
 					statement = connection.prepareStatement(query);
 																		
-					statement.setInt(1, resultSet.getInt(1));	//Order_id		
+					statement.setInt(1, resultSet.getInt(1));	
 					statement.setInt(2, item.getBook().getId());		
 					statement.setInt(3, item.getQuantity());			
 					statement.setFloat(4, item.getBook().getPrice());	

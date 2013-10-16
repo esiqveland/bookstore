@@ -35,18 +35,28 @@
             <div>
             <c:choose>
                 <c:when test="${empty book.reviews}">
-                    No reviews for this book!
+                    <div>No reviews for this book!</div>
                 </c:when>
                 <c:otherwise>
-                    <h3>Reviews:</h3>
-                    <c:forEach items="${book.reviews}" var="review" varStatus="it">
-                        ${review.author.name} wrote:
-                        <div>
-                            ${review.content}
-                        </div>
-                    </c:forEach>
+                    <div>
+                        <div><h3>Reviews:</h3></div>
+                        <c:forEach items="${book.reviews}" var="reviews" varStatus="it">
+                            <strong>${reviews.author.name} wrote:</strong>
+                            <div>
+                                <em>${reviews.content}</em>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </c:otherwise>
             </c:choose>
+            <div>
+                <h3>Write a review:</h3>
+                <form method="post" action="postReview.do">
+                    <textarea rows="4" cols="50" placeholder="Write your review here!" name="content"></textarea>
+                    <input type="hidden" name="isbn" value="${book.isbn13}" />
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
             </div>
         </c:otherwise>
     </c:choose>

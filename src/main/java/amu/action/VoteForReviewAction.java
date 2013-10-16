@@ -24,7 +24,7 @@ public class VoteForReviewAction implements Action {
         if (request.getMethod().equals("GET") && request.getParameter("review") != null) {
             int voteforreview = Integer.parseInt(request.getParameter("review"));
             ReviewDAO reviewDAO = new ReviewDAO();
-            Review review = reviewDAO.getReviewsById(voteforreview);
+            Review review = reviewDAO.getReviewById(voteforreview);
             if (reviewDAO.voteForReview(voteforreview, customer)) {
                 return new ActionResponse(ActionResponseType.FORWARD, "bookNotFound");
             } else {

@@ -31,9 +31,11 @@ public class VoteForReviewAction implements Action {
                 actionResponse.addParameter("isbn", review.getBook().getIsbn13());
                 return actionResponse;
             } else {
-                return new ActionResponse(ActionResponseType.FORWARD, "bookNotFound");
+                ActionResponse actionResponse = new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+                actionResponse.addParameter("isbn", review.getBook().getIsbn13());
+                return actionResponse;
             }
         }
-        return new ActionResponse(ActionResponseType.FORWARD, "bookNotFound");
+        return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
     }
 }

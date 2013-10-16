@@ -61,7 +61,7 @@ public class OrderDAO {
 				Calendar createdDate = Calendar.getInstance();
 				createdDate.setTime(resultSet.getDate("created"));
 				
-				if (resultSet.getInt("status") == -2) break;
+				if (resultSet.getInt("status") == -2) continue;
 				
 				orders.add(new Order(resultSet.getInt("id"),
 						customer,

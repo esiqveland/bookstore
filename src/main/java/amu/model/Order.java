@@ -13,7 +13,6 @@ public class Order {
     private String value;
     private int status;
     private Cart cart;
-    
     // TODO: Add OrderItems
 
     public Order(int id, Customer customer, Address address, Calendar createdDate, String value, int status) {

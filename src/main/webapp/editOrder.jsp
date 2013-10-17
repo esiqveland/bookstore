@@ -1,18 +1,33 @@
 <div class="container">
-    <h1>Edit Address</h1>
-    <form action="editAddress.do" method="post">
-        <c:if test="${not empty messages}">
-            <c:forEach var="message" items="${messages}">
-                <div>
-                    <span class="error">${message}</span>
-                </div>
-            </c:forEach>
-        </c:if>
-        <input name="id" value="${address.id}" type="hidden" />
-        <div>
-            <div><label for="address">Edit address: </label></div>
-            <textarea id="address" name="address" rows="5" cols="40"><c:out>${address.address}</c:out></textarea>
-        </div>
-        <div><input type="submit" value="Submit" /></div>
-    </form>
+    <h1>Shopping Cart</h1>
+    <c:choose>
+        <c:when test="${empty cart.items}">
+            <div>No items in shopping cart.</div>
+        </c:when>
+        <c:otherwise>
+            <form action="updateCart.do" method="post">
+                <c:forEach items="${cart.items}" var="item">
+                    <h3>${item.value.book.title.name}</h3>
+                    <div>Price: ${item.value.book.price}</div>
+                    <input type="hidden" name="isbn" value="${item.value.book.isbn13}" />
+                    <div> Quantity:
+                        <input type="text" name="quantity" value="${item.value.quantity}" />
+                    </div>
+                </c:forEach>
+                <br />
+                <input type="submit" value="Update cart" />
+            </form>
+            <c:choose>
+                <c:when test="${cart.numberOfItems == 1}">
+                    <div>Subtotal: ${cart.subtotal}</div>
+                </c:when>
+                <c:otherwise>
+                    <div>Subtotal (${cart.numberOfItems} items): ${cart.subtotal}</div>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <div><a href="debug/list_books.jsp">Continue shopping</a></div>
+            <div><a href="selectShippingAddress.do">Go to checkout</a></div>
+        </c:otherwise>
+    </c:choose>
 </div>

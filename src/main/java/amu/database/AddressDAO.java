@@ -55,7 +55,9 @@ public class AddressDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                address = new Address(id, null, resultSet.getString("address")); 
+                address = new Address(id, null, resultSet.getString("address"));
+                address.setCustomer(customer);
+                
             } 
         } catch (SQLException exception) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);

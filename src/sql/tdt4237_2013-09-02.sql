@@ -6427,9 +6427,28 @@ LOCK TABLES `review` WRITE;
 
 INSERT INTO `review` (`id`, `isbn13`, `author_email`, `content`, `score`)
 VALUES
-  (1,'9788251909518', 'test@test.com', 'Awesome book', 0),
-  (2,'9788251909518', 'test@test.com', 'Horrible horrible book', 0),
+  (1,'9788251909518', 'test@test.com', 'Awesome book', 1),
+  (2,'9788251909518', 'test@test.com', 'Horrible horrible book', 1),
   (3,'9788241707117', 'test@test.com', 'Great passion from the writer!', 0);
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `votes`;
+CREATE TABLE `votes` (
+  `id` int(32) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `vote_value` int(8) SIGNED NOT NULL,
+  `review_id` int(10) UNSIGNED NOT NULL,
+  `customer_id` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `review_id` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `votes` WRITE;
+
+INSERT INTO `votes` (`id`, `vote_value`, `review_id`, `customer_id`)
+VALUES
+  (1, 1, 1, 1),
+  (2, 1, 2, 1);
 
 UNLOCK TABLES;
 

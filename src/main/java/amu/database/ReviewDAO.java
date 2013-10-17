@@ -53,6 +53,7 @@ public class ReviewDAO {
         Book book = bookDAO.findByISBN(isbn);
         return getReviewsByBook(book);
     }
+
     public Review createReview(Review review, Customer author) {
         return createReview(review.getBook().getIsbn13(), author, review.getContent());
     }
@@ -104,30 +105,35 @@ public class ReviewDAO {
     }
 
     public boolean voteForReview(Review review, Customer customer) {
-        // TODO: have we voted before?
-        // TODO: implement voting for a review
-
-        if(haveCustomerVotedBefore(review, customer)) {
-            return false;
-        }
-
         Connection connection = null;
         PreparedStatement statement = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
         boolean returnVal = true;
+
         try {
             connection = Database.getConnection();
 
-            String query = "INSERT INTO votes (vote_value, review_id, customer_id) VALUES (?, ?, ?)";
-            statement = connection.prepareStatement(query);
-            statement.setInt(1, 1);
-            statement.setInt(2, review.getId());
-            statement.setInt(3, customer.getId());
+            String query;
+            int score = 1;
+            if(haveCustomerVotedBefore(review, customer)) {
+                score = -1;
+                query = "DELETE FROM votes WHERE review_id = ? AND customer_id = ?";
+                statement = connection.prepareStatement(query);
+                statement.setInt(1, review.getId());
+                statement.setInt(2, customer.getId());
+            } else {
+                query = "INSERT INTO votes (vote_value, review_id, customer_id) VALUES (?, ?, ?)";
+                statement = connection.prepareStatement(query);
+                statement.setInt(1, score);
+                statement.setInt(2, review.getId());
+                statement.setInt(3, customer.getId());
+            }
 
             statement.executeUpdate();
 
-            preparedStatement = updateReviewScore(review, connection, preparedStatement);
+            preparedStatement = updateReviewScore(review, connection, preparedStatement, score);
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "voteForReview SQL Query: " + query);
 
         } catch (SQLException exception) {
@@ -140,10 +146,10 @@ public class ReviewDAO {
         return returnVal;
     }
 
-    private PreparedStatement updateReviewScore(Review review, Connection connection, PreparedStatement preparedStatement) throws SQLException {
+    private PreparedStatement updateReviewScore(Review review, Connection connection, PreparedStatement preparedStatement, int scoreDiff) throws SQLException {
         String scoreReviewQuery = "UPDATE review SET score=? WHERE id=?";
         preparedStatement = connection.prepareStatement(scoreReviewQuery);
-        preparedStatement.setInt(1, review.getScore()+1);
+        preparedStatement.setInt(1, review.getScore()+scoreDiff);
         preparedStatement.setInt(2, review.getId());
 
         preparedStatement.executeUpdate();

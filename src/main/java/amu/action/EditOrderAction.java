@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package amu.action;
 
 import amu.database.AddressDAO;
 import amu.database.OrderDAO;
 import amu.database.OrderItemsDAO;
-import amu.model.Address;
-import amu.model.Customer;
-import amu.model.OrderItems;
-import amu.model.SimpleOrder;
+import amu.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +11,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-/**
- *
- * @author Knut
- */
 
 class EditOrderAction implements Action {
 
@@ -38,37 +26,39 @@ class EditOrderAction implements Action {
             return actionResponse;
         }
 
-        //Fetch existing order and order items:
         OrderDAO orderDAO = new OrderDAO();
-        OrderItemsDAO orderItemsDAO = new OrderItemsDAO();
-        List<OrderItems> orderItemsList;
         int orderId = Integer.parseInt(request.getParameter("id"));
-        
-        SimpleOrder sOrder = orderDAO.findById(orderId);
-        orderItemsList = orderItemsDAO.browseByOrderId(orderId);
-        
-        //Cancel orginale poster
-        orderDAO.cancel(orderId);
-        
-        //Legg inn ny ordre som er modifisert til nye produkter
-        for (OrderItems orderItems : orderItemsList) {
-			//Create new orderitems for each post in hashmap
-        	int bookId = orderItems.getBook_id();
-        	int quantity = (int) request.getAttribute(String.valueOf(bookId));
-		}
-        
-        //Legg inn 
-        
-        
-        
+
+        Order oldOrder = orderDAO.getOrder(customer.getId(), orderId);
+
         if (request.getMethod().equals("POST")) {
-           
+            Cart oldOrderCart = oldOrder.getCart();
+            Cart newCart = new Cart();
+
+            double subTotal = 0.0;
+            for (CartItem cartItem : oldOrderCart.getItems().values()) {
+                String bookQuantity = request.getParameter(cartItem.getBook().getIsbn13());
+                int quantity = Integer.parseInt(bookQuantity);
+                newCart.addItem(new CartItem(cartItem.getBook(), quantity));
+                subTotal += cartItem.getBook().getPrice() * quantity;
+            }
+
+            Order newOrder = new Order(customer, oldOrder.getAddress(), String.valueOf(subTotal), newCart);
+            orderDAO.add(newOrder);
+            orderDAO.cancel(orderId);
         }
 
-        // (request.getMethod().equals("GET")) 
+        if (request.getMethod().equals("GET")) {
+            ActionResponse actionResponse = new ActionResponse(ActionResponseType.FORWARD, "editOrder");
+            actionResponse.addParameter("id", String.valueOf(orderId));
+            request.setAttribute("cart", oldOrder.getCart());
+            request.setAttribute("orderid", orderId);
+            return actionResponse;
+        }
         
-        return new ActionResponse(ActionResponseType.FORWARD, "editAddress");
+        return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
     }
 
-   
+
+
 }

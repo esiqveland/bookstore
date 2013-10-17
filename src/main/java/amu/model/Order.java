@@ -15,13 +15,13 @@ public class Order {
     private Cart cart;
     // TODO: Add OrderItems
 
-    public Order(int id, Customer customer, Address address, Calendar createdDate, String value, int status) {
+    public Order(int id, Customer customer, Address address, Calendar createdDate, String price, int orderStatus) {
         this.id = id;
         this.customer = customer;
         this.address = address;
         this.createdDate = createdDate;
-        this.value = value;
-        this.status = status;
+        this.value = price;
+        this.status = orderStatus;
     }
 
     public Order(Customer customer, Address address, String subtotal) {
@@ -75,7 +75,11 @@ public class Order {
     public int getStatus() {
         return status;
     }
-    
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
     public String getStatusText() {
         switch (status)
         {

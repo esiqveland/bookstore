@@ -1,10 +1,6 @@
 package amu.database;
 
-import amu.model.CartItem;
-import amu.model.Customer;
-import amu.model.Order;
-import amu.model.OrderItems;
-import amu.model.SimpleOrder;
+import amu.model.*;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -12,10 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +21,7 @@ public class OrderDAO {
     public Order getOrder(Customer customer, Order order) {
         return getOrder(customer.getId(), order.getId());
     }
+
     public Order getOrder(int customerId, int orderid ) {
         Order order = null;
         try {
@@ -47,6 +41,8 @@ public class OrderDAO {
                 createdDate.setTime(resultSet.getDate("created"));
                 Customer customer = customerDAO.findById(customerId);
 
+                Cart cart = buildCart(customer, orderid);
+
                 order = new Order(resultSet.getInt("id"),
                         customer,
                         addressDAO.read(resultSet.getInt("address_id"), customer),
@@ -54,6 +50,7 @@ public class OrderDAO {
                         resultSet.getString("value"),
                         resultSet.getInt("status"));
 
+                order.setCart(cart);
             }
         } catch (SQLException exception) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
@@ -63,7 +60,23 @@ public class OrderDAO {
 
         return order;
     }
-	public List<Order> browse(Customer customer) {
+
+    private Cart buildCart(Customer customer, int orderid) {
+        BookDAO bookDAO = new BookDAO();
+        OrderItemsDAO orderItemsDAO = new OrderItemsDAO();
+
+        List<OrderItems> orderItems = orderItemsDAO.browseByOrderId(orderid);
+
+        Cart cart = new Cart();
+        for(OrderItems item : orderItems) {
+            CartItem cartItem = new CartItem(bookDAO.getBookById(item.getBook_id()), item.getQuantity());
+            cart.addItem(cartItem);
+
+        }
+        return cart;
+    }
+
+    public List<Order> browse(Customer customer) {
 		List<Order> orders = new ArrayList<Order>();
 
 		try {
@@ -176,10 +189,10 @@ public class OrderDAO {
 					List<OrderItems> list = orderItemsDAO.browseByOrderId(sOrder.getId());
 					
 					for (OrderItems orderItems : list) {
-						query = "INSERT INTO `order_items` (order_id, book_id, quantity, price, status)"
+						query = "INSERT INTO `order_items` (order_id, book_id, quantity, price, status) "
 								+ " VALUES (?,?,?,?,?)";
 						statement = connection.prepareStatement(query);
-																			
+
 						statement.setInt(1, orderItems.getOrder_id());	//Order_id		
 						statement.setInt(2, orderItems.getBook_id());		
 						statement.setInt(3, orderItems.getQuantity()*-1);			

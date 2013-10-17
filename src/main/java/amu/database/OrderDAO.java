@@ -45,7 +45,45 @@ public class OrderDAO {
 	Connection connection = null;
 	PreparedStatement statement = null;
 	ResultSet resultSet = null;
-	
+
+    public Order getOrder(Customer customer, Order order) {
+        return getOrder(customer.getId(), order.getId());
+    }
+    public Order getOrder(int customerId, int orderid ) {
+        Order order = null;
+        try {
+            connection = Database.getConnection();
+
+            String query = "SELECT * FROM `order` WHERE id=? AND customer_id=?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, orderid);
+            statement.setInt(2, customerId);
+            resultSet = statement.executeQuery();
+
+            AddressDAO addressDAO = new AddressDAO();
+            CustomerDAO customerDAO = new CustomerDAO();
+
+            if (resultSet.next()) {
+                Calendar createdDate = Calendar.getInstance();
+                createdDate.setTime(resultSet.getDate("created"));
+                Customer customer = customerDAO.findById(customerId);
+
+                order = new Order(resultSet.getInt("id"),
+                        customer,
+                        addressDAO.read(resultSet.getInt("address_id"), customer),
+                        createdDate,
+                        resultSet.getString("value"),
+                        resultSet.getInt("status"));
+
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
+        } finally {
+            Database.close(connection, statement, resultSet);
+        }
+
+        return order;
+    }
 	public List<Order> browse(Customer customer) {
 		List<Order> orders = new ArrayList<Order>();
 
@@ -56,8 +94,8 @@ public class OrderDAO {
 			statement.setInt(1, customer.getId());
 			resultSet = statement.executeQuery();
 
-			while (resultSet.next()) {
-				AddressDAO addressDAO = new AddressDAO();
+            AddressDAO addressDAO = new AddressDAO();
+            while (resultSet.next()) {
 				Calendar createdDate = Calendar.getInstance();
 				createdDate.setTime(resultSet.getDate("created"));
 				
@@ -184,7 +222,7 @@ public class OrderDAO {
 					query = "INSERT INTO `order_items` (order_id, book_id, quantity, price, status)"
 							+ " VALUES (?,?,?,?,?)";
 					statement = connection.prepareStatement(query);
-																		
+
 					statement.setInt(1, resultSet.getInt(1));	
 					statement.setInt(2, item.getBook().getId());		
 					statement.setInt(3, item.getQuantity());			

@@ -104,9 +104,9 @@ public class CustomerDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "INSERT INTO customer (email, password, name, activation_token) VALUES ('?', '?', '?', '?')";
+            String query = "INSERT INTO customer (email, password, name, activation_token) VALUES (?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
-            statement.setString(1,customer.getEmail());
+            statement.setString(1, customer.getEmail());
             statement.setString(2, customer.getPassword());
             statement.setString(3, customer.getName());
             statement.setString(4, customer.getActivationToken());

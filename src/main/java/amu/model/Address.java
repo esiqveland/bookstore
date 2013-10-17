@@ -33,4 +33,8 @@ public class Address {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public void setCustomer(Customer customer) {
+    	this.customer = customer;
+    }
 }

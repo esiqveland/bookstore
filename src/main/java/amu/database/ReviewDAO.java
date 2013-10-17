@@ -17,7 +17,7 @@ public class ReviewDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "SELECT * FROM review WHERE isbn13=?";
+            String query = "SELECT * FROM review WHERE isbn13=? ORDER BY score DESC";
             statement = connection.prepareStatement(query);
             statement.setString(1, book.getIsbn13());
 
@@ -119,7 +119,7 @@ public class ReviewDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "INSERT INTO votes (value, review_id, customer_id) VALUES (?, ?, ?)";
+            String query = "INSERT INTO votes (vote_value, review_id, customer_id) VALUES (?, ?, ?)";
             statement = connection.prepareStatement(query);
             statement.setInt(1, 1);
             statement.setInt(2, review.getId());

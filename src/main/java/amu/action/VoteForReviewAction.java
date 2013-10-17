@@ -27,15 +27,15 @@ public class VoteForReviewAction implements Action {
             Review review = reviewDAO.getReviewById(voteforreview);
 
             if (reviewDAO.voteForReview(review, customer)) {
-                ActionResponse actionResponse = new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+                ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
                 actionResponse.addParameter("isbn", review.getBook().getIsbn13());
                 return actionResponse;
             } else {
-                ActionResponse actionResponse = new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+                ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
                 actionResponse.addParameter("isbn", review.getBook().getIsbn13());
                 return actionResponse;
             }
         }
-        return new ActionResponse(ActionResponseType.FORWARD, "viewBook");
+        return new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
     }
 }

@@ -1,7 +1,7 @@
 <div class="container">
     <h1>Delete Order</h1>
     <div>Do you want to delete the following Order?</div>
-    <pre>${order.address.address}</pre>
+    <pre><c:out value="${order.address.address}" /></pre>
     <form action="deleteOrder.do" method="post">
         <c:if test="${not empty messages}">
             <c:forEach var="message" items="${messages}">

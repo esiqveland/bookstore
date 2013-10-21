@@ -7,7 +7,7 @@
         <c:otherwise>
             <form action="editOrder.do?id=${orderid}" method="post">
                 <c:forEach items="${cart.items}" var="item">
-                    <h3>${item.value.book.title.name}</h3>
+                    <h3><c:out value="${item.value.book.title.name}" /></h3>
                     <div>Price: ${item.value.book.price}</div>
                     <div> Quantity:
                         <input type="text" name="${item.value.book.isbn13}" value="${item.value.quantity}" />

@@ -10,7 +10,7 @@
                 <span>Credit card #${counter.count}</span><br />
                 <div>Credit card number: ${creditCard.maskedCreditCardNumber}</div>
                 <div>Expiry date: <fmt:formatDate value="${creditCard.expiryDate.time}" type="date" dateStyle="short" /></div>
-                <div>Cardholder's name: ${creditCard.cardholderName}</div>
+                <div>Cardholder's name: <c:out value="${creditCard.cardholderName}" /></div>
             </div>
             <div>
                 <label for="cardSecurityCode">Card security code: </label>

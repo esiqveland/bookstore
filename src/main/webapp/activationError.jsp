@@ -1,9 +1,9 @@
 <div class="container">
     <h1>Activation Error</h1>
     <!--
-    <div>${debugActivation.id}</div>
-    <div>${debugActivation.email}</div>
-    <div>${debugActivation.name}</div>
+    <div><c:out value="${debugActivation.id}" /></div>
+    <div><c:out value="${debugActivation.email}" /></div>
+    <div><c:out value="${debugActivation.name}" /></div>
     <div>${debugActivation.password}</div>
     <div>${debugActivation.activationToken}</div>
     -->

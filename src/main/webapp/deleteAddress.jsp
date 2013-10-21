@@ -1,12 +1,12 @@
 <div class="container">
     <h1>Delete Address</h1>
     <div>Do you want to delete the following address?</div>
-    <pre>${address.address}</pre>
+    <pre><c:out value="${address.address}" /></pre>
     <form action="deleteAddress.do" method="post">
         <c:if test="${not empty messages}">
             <c:forEach var="message" items="${messages}">
                 <div>
-                    <span class="error">${message}</span>
+                    <span class="error"><c:out value="${message}" /></span>
                 </div>
             </c:forEach>
         </c:if>

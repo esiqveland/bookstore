@@ -4,7 +4,7 @@
         <c:if test="${not empty messages}">
             <c:forEach var="message" items="${messages}">
                 <div>
-                    <span class="error">${message}</span>
+                    <span class="error"><c:out value="${message}" /></span>
                 </div>
             </c:forEach>
         </c:if>

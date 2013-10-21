@@ -12,9 +12,9 @@
         </tr>
         <tr>
             <td><label for="cardholderName">Cardholder's name: </label></td>
-            <td><input id="cardholderName" name="cardholderName" type="text" value="${values.cardholderName}" /></td>
+            <td><input id="cardholderName" name="cardholderName" type="text" value="<c:out value="${values.cardholderName}" />" /></td>
             <c:if test="${not empty messages.cardholderName}">
-                <span class="error">${messages.cardholderName}</span>
+                <span class="error"><c:out value="${messages.cardholderName}" /></span>
             </c:if>
         </tr>
         <tr>
@@ -49,6 +49,6 @@
     </form>
     </div>
     <c:if test="${not empty messages.error}">
-        <span class="error">${messages.error}</span>
+        <span class="error"><c:out value="${messages.error}" /></span>
     </c:if>
 </div>

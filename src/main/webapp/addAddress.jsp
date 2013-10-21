@@ -4,7 +4,7 @@
         <c:if test="${not empty messages}">
             <c:forEach var="message" items="${messages}">
                 <div>
-                    <span class="error">${message}</span>
+                    <span class="error"><c:out value="${message}" /></span>
                 </div>
             </c:forEach>
         </c:if>
@@ -13,7 +13,7 @@
         </c:if>
         <div>
             <div><label for="address">Add address: </label></div>
-            <textarea id="address" name="address" rows="5" cols="20">${address.address}</textarea>
+            <textarea id="address" name="address" rows="5" cols="20"><c:out value="${address.address}" /></textarea>
         </div>
         <div><input type="submit" value="Submit" /></div>
     </form>

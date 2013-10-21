@@ -1,6 +1,9 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="container">
     <h1>Customer options</h1>
-    <div>Hello, ${customer.name}</div>
+    <div>Hello, <c:out value="${customer.name}" /></div>
     <div>
         <div><a href="changeName.do">Change name</a></div>
         <div><a href="changeEmail.do">Change email</a></div>
@@ -17,7 +20,7 @@
                 <div>Credit card #${counter.count}</div>
                 <div>Credit card number: ${creditCard.maskedCreditCardNumber}</div>
                 <div>Expiry date: <fmt:formatDate value="${creditCard.expiryDate.time}" type="date" dateStyle="short" /></div>
-                <div>Cardholder's name: ${creditCard.cardholderName}</div>
+                <div>Cardholder's name: <c:out value="${creditCard.cardholderName}" /></div>
                 <div><a href="deleteCreditCard.do?id=${creditCard.id}">Delete</a></div>
             </div>
             <br>
@@ -31,7 +34,7 @@
         <c:forEach var="address" items="${addresses}" varStatus="counter">
             <div>
                 <span>Address #${counter.count}</span>
-                <pre>${address.address}</pre>
+                <pre><c:out value="${address.address}" /></pre>
                 <span><a href="editAddress.do?id=${address.id}">Edit</a></span>
                 <span><a href="deleteAddress.do?id=${address.id}">Delete</a></span>
             </div>
@@ -42,10 +45,10 @@
         <c:forEach var="order" items="${orders}" varStatus="counter">
             <div>
                 <div>Order #${counter.count}</div>
-                <pre>${order.address.address}</pre>
+                <pre><c:out value="${order.address.address}" /></pre>
                 <div>Date: <fmt:formatDate value="${order.createdDate.time}" type="date" dateStyle="short" /></div>
                 <div>Value: ${order.value}</div>
-                <div>Status: ${order.statusText}</div>
+                <div>Status: <c:out value="${order.statusText}" /></div>
                 <div>
                     <span><a href="editOrder.do?id=${order.id}">Edit</a></span>
                     <span><a href="deleteOrder.do?id=${order.id}">Delete</a></span>

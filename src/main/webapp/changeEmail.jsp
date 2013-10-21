@@ -1,9 +1,9 @@
 <div class="container">
 <h1>Change Email</h1>
-    <div>Current email ${customer.email}</div>
+    <div>Current email <c:out value="${customer.email}" /></div>
     <c:if test="${not empty messages}">
         <c:forEach var="message" items="${messages}">
-            <div><span class="error">${message}</span></div>
+            <div><span class="error"><c:out value="${message}" /></span></div>
             </c:forEach>
         </c:if>
     <div class="general-form">

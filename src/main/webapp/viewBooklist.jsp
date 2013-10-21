@@ -11,10 +11,11 @@
                 <h2><c:out value="${booklist.title}" /></h2>
                 <h3><c:out value="${booklist.description}" /></h3>
                 <c:forEach items="${booklist.books}" var="book">
-                    <h3><a href="viewBook?isbn=<c:out value="${book.isbn13}" />"><c:out value="${book.title}" /></a></h3>
+                    <h3><a href="viewBook.do?isbn=<c:out value="${book.isbn13}" />"><c:out value="${book.title.name}" /></a></h3>
                     <div>Price: <c:out value="${book.price}" /></div>
                 </c:forEach>
                 <br />
+                <a href="deleteBooklist.do?id=${booklist.id}">Delete this booklist?</a>
         </c:otherwise>
     </c:choose>
 </div>

@@ -43,5 +43,6 @@ public class CreateBookListAction implements Action {
         BookListDAO bookListDAO = new BookListDAO();
         bookListDAO.save(bookList);
 
+        return new ActionResponse(ActionResponseType.REDIRECT, "myBooklists");
     }
 }

@@ -10746,14 +10746,14 @@ VALUES
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `booklist`;
-CREATE TABLE `booklist` {
+CREATE TABLE `booklist` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `description` text,
     `title` VARCHAR(255) NOT NULL,
     `author` int(10) NOT NULL,
     `published` TINYINT(1) DEFAULT TRUE,
     PRIMARY KEY(`id`)
-} ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `booklist` (`id`, `title`, `description`, `author`)
 VALUES
@@ -10761,11 +10761,11 @@ VALUES
     (2, "Troy falls faster than glaciers", NULL, 1);
 
 DROP TABLE IF EXISTS `booklist_items`;
-CREATE TABLE `booklist_items` {
+CREATE TABLE `booklist_items` (
     `booklist_id` int(10) unsigned NOT NULL,
     `book_id` int(10) unsigned NOT NULL,
     PRIMARY KEY `booklist_id` (`book_id`)
-} ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `booklist_items` (`booklist_id`, `book_id`)
 VALUES

@@ -20,6 +20,9 @@ public class BookList {
         }
     }
 
+    public BookList() {
+        books = new ArrayList<>();
+    }
     public Customer getAuthor() {
         return author;
     }

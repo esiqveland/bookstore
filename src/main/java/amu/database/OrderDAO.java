@@ -110,43 +110,19 @@ public class OrderDAO {
 		return orders;
 	}
 	
-	public SimpleOrder findById(int orderId) {
+	public boolean cancel(int orderId, int customerId) {
 		SimpleOrder sOrder = null;
-		try {
-			connection = Database.getConnection();
-			String query = "SELECT * FROM `order` WHERE id=?";
-			statement = connection.prepareStatement(query);
-			statement.setInt(1, orderId);
-			resultSet = statement.executeQuery();
-			
-			while (resultSet.next()) {
-				sOrder = new SimpleOrder(resultSet.getInt("id"),
-						resultSet.getInt("customer_id"),
-						resultSet.getInt("address_id"), 
-						resultSet.getFloat("value"),
-						resultSet.getInt("status"));
-			}
-		} catch (SQLException exception) {
-			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, exception);
-		} finally {
-			Database.close(connection, statement, resultSet);
-		}
 
-		return sOrder;
-	}
-	
-	public boolean cancel(int orderId) {
-		
-		System.out.println("STARTING IN CANCEL");
-		
-		//Fetch order from DB
-		SimpleOrder sOrder = null;
 		try{
 			connection = Database.getConnection();
-			String query = "SELECT * FROM `order` WHERE id=?";
-			statement = connection.prepareStatement(query);
+
+            String query = "SELECT * FROM `order` WHERE id=? AND customer_id=?";
+
+            statement = connection.prepareStatement(query);
 			statement.setInt(1, orderId);
-			resultSet = statement.executeQuery();
+            statement.setInt(2, customerId);
+
+            resultSet = statement.executeQuery();
 						
 			System.out.println("SELECT DONE");
 			

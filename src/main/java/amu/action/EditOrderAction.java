@@ -45,7 +45,7 @@ class EditOrderAction implements Action {
 
             Order newOrder = new Order(customer, oldOrder.getAddress(), String.valueOf(subTotal), newCart);
             orderDAO.add(newOrder);
-            orderDAO.cancel(orderId);
+            orderDAO.cancel(orderId, customer.getId());
         }
 
         if (request.getMethod().equals("GET")) {

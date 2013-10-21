@@ -30,7 +30,7 @@ public class DeleteOrderAction implements Action{
         }
 
         OrderDAO orderDAO = new OrderDAO();
-        orderDAO.cancel(Integer.parseInt(request.getParameter("id")));
+        orderDAO.cancel(Integer.parseInt(request.getParameter("id")), customer.getId());
         
         return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
     }  

@@ -15,13 +15,13 @@ import amu.model.Order;
 import amu.model.OrderItems;
 
 public class OrderItemsDAO {
-	
-	Connection connection = null;
-	PreparedStatement statement = null;
-	ResultSet resultSet = null;
-	
+
 	public List<OrderItems> browseByOrderId(int orderId) {
-		List<OrderItems> orderItems = new ArrayList<OrderItems>();
+        List<OrderItems> orderItems = new ArrayList<OrderItems>();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
 		try {
 			connection = Database.getConnection();
@@ -31,7 +31,7 @@ public class OrderItemsDAO {
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				orderItems.add(new OrderItems(resultSet.getInt("order_item_id"), 
+				orderItems.add(new OrderItems(resultSet.getInt("order_item_id"),
 						resultSet.getInt("order_id"),
 						resultSet.getInt("book_id"),
 						resultSet.getInt("quantity"),

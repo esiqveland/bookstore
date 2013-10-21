@@ -10751,6 +10751,7 @@ CREATE TABLE `booklist` {
     `description` text,
     `title` VARCHAR(255) NOT NULL,
     `author` int(10) NOT NULL,
+    `published` TINYINT(1) DEFAULT TRUE,
     PRIMARY KEY(`id`)
 } ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -28,6 +28,7 @@
             <br />
             <div><a href="debug/list_books.jsp">Continue shopping</a></div>
             <div><a href="selectShippingAddress.do">Go to checkout</a></div>
+            <div><a href="createBooklist.do">Create and publish a booklist!</a></div>
         </c:otherwise>
     </c:choose>
 </div>

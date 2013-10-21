@@ -8,15 +8,15 @@ public class BookList {
     private int id;
     private String title;
     private String description;
-    private List<Book> bookList;
+    private List<Book> books;
     private Customer author;
 
     public void addBook(Book book) {
-        if(bookList == null) {
-            bookList = new ArrayList<Book>();
+        if(books == null) {
+            books = new ArrayList<Book>();
         }
-        if(!bookList.contains(book)) {
-            bookList.add(book);
+        if(!books.contains(book)) {
+            books.add(book);
         }
     }
 
@@ -52,11 +52,11 @@ public class BookList {
         this.description = description;
     }
 
-    public List<Book> getBookList() {
-        return bookList;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

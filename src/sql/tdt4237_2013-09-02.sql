@@ -6411,47 +6411,6 @@ VALUES
 /*!40000 ALTER TABLE `author_x_book` ENABLE KEYS */;
 UNLOCK TABLES;
 
-# Dump of table review
-# ------------------------------------------------------------
-DROP TABLE IF EXISTS `review`;
-CREATE TABLE `review` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `isbn13` char(13) NOT NULL DEFAULT '',
-  `author_email` varchar(255) NOT NULL,
-  `content` text,
-  `score` int(10),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-LOCK TABLES `review` WRITE;
-
-INSERT INTO `review` (`id`, `isbn13`, `author_email`, `content`, `score`)
-VALUES
-  (1,'9788251909518', 'test@test.com', 'Awesome book', 1),
-  (2,'9788251909518', 'test@test.com', 'Horrible horrible book', 1),
-  (3,'9788241707117', 'test@test.com', 'Great passion from the writer!', 0);
-
-UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `votes`;
-CREATE TABLE `votes` (
-  `id` int(32) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `vote_value` int(8) SIGNED NOT NULL,
-  `review_id` int(10) UNSIGNED NOT NULL,
-  `customer_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `review_id` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-LOCK TABLES `votes` WRITE;
-
-INSERT INTO `votes` (`id`, `vote_value`, `review_id`, `customer_id`)
-VALUES
-  (1, 1, 1, 1),
-  (2, 1, 2, 1);
-
-UNLOCK TABLES;
-
 # Dump of table book
 # ------------------------------------------------------------
 
@@ -10745,7 +10704,75 @@ VALUES
 /*!40000 ALTER TABLE `title` ENABLE KEYS */;
 UNLOCK TABLES;
 
+# Dump of table review
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `review`;
+CREATE TABLE `review` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `isbn13` char(13) NOT NULL DEFAULT '',
+  `author_email` varchar(255) NOT NULL,
+  `content` text,
+  `score` int(10),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `review` WRITE;
+
+INSERT INTO `review` (`id`, `isbn13`, `author_email`, `content`, `score`)
+VALUES
+  (1,'9788251909518', 'test@test.com', 'Awesome book', 1),
+  (2,'9788251909518', 'test@test.com', 'Horrible horrible book', 1),
+  (3,'9788241707117', 'test@test.com', 'Great passion from the writer!', 0);
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `votes`;
+CREATE TABLE `votes` (
+  `id` int(32) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `vote_value` int(8) SIGNED NOT NULL,
+  `review_id` int(10) UNSIGNED NOT NULL,
+  `customer_id` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `review_id` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `votes` WRITE;
+
+INSERT INTO `votes` (`id`, `vote_value`, `review_id`, `customer_id`)
+VALUES
+  (1, 1, 1, 1),
+  (2, 1, 2, 1);
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `booklist`;
+CREATE TABLE `booklist` {
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `description` text,
+    `title` VARCHAR(255) NOT NULL,
+    `author` int(10) NOT NULL,
+    `published` TINYINT(1) DEFAULT TRUE,
+    PRIMARY KEY(`id`)
+} ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `booklist` (`id`, `title`, `description`, `author`)
+VALUES
+    (1, "Hell if I know", "The books of win", 1),
+    (2, "Troy falls faster than glaciers", NULL, 1);
+
+DROP TABLE IF EXISTS `booklist_items`;
+CREATE TABLE `booklist_items` {
+    `booklist_id` int(10) unsigned NOT NULL,
+    `book_id` int(10) unsigned NOT NULL,
+    PRIMARY KEY `booklist_id` (`book_id`)
+} ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `booklist_items` (`booklist_id`, `book_id`)
+VALUES
+    (1, 1),
+    (1, 3),
+    (2, 2),
+    (2, 4);
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

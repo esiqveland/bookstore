@@ -10733,7 +10733,7 @@ CREATE TABLE `votes` (
   `review_id` int(10) UNSIGNED NOT NULL,
   `customer_id` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `review_id` (`customer_id`)
+  KEY (`review_id`, `customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `votes` WRITE;
@@ -10764,7 +10764,7 @@ DROP TABLE IF EXISTS `booklist_items`;
 CREATE TABLE `booklist_items` (
     `booklist_id` int(10) unsigned NOT NULL,
     `book_id` int(10) unsigned NOT NULL,
-    PRIMARY KEY `booklist_id` (`book_id`)
+    PRIMARY KEY (`booklist_id`, `book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `booklist_items` (`booklist_id`, `book_id`)

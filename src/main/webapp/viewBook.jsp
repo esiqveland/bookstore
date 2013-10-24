@@ -1,3 +1,5 @@
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -57,11 +59,26 @@
             </c:choose>
             <div>
                 <h3>Write a review:</h3>
+                <div>
                 <form method="post" action="postReview.do">
+                    <div>
                     <textarea rows="4" cols="50" placeholder="Write your review here!" name="content"></textarea>
+                    </div>
+                    <div>
                     <input type="hidden" name="isbn" value="${book.isbn13}" />
+                    </div>
+                    <div style="width: 100%;text-align: center;">
+                    <div style="display:inline-block;">
+                        <%
+                          ReCaptcha c = ReCaptchaFactory.newReCaptcha("6Lc8QOkSAAAAAHI1R4dDPsAQn3Fu_Ap618Y8POYE",
+                           "6Lc8QOkSAAAAABqBZdDu8ksk95Ew57Xacipc4F-w", false);
+                          out.print(c.createRecaptchaHtml(null, null));
+                        %>
+                    </div>
+                    </div>
                     <input type="submit" value="Submit" />
                 </form>
+                </div>
             </div>
             </div>
         </c:otherwise>

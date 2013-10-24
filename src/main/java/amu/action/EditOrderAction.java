@@ -31,6 +31,10 @@ class EditOrderAction implements Action {
 
         Order oldOrder = orderDAO.getOrder(customer.getId(), orderId);
 
+        if(oldOrder.isCanceled()){
+            return new ActionResponse(ActionResponseType.REDIRECT, "viewCustomer");
+        }
+
         if (request.getMethod().equals("POST")) {
             Cart oldOrderCart = oldOrder.getCart();
             Cart newCart = new Cart();
@@ -39,6 +43,9 @@ class EditOrderAction implements Action {
             for (CartItem cartItem : oldOrderCart.getItems().values()) {
                 String bookQuantity = request.getParameter(cartItem.getBook().getIsbn13());
                 int quantity = Integer.parseInt(bookQuantity);
+                if (quantity < 0){
+                	continue;
+                }
                 newCart.addItem(new CartItem(cartItem.getBook(), quantity));
                 subTotal += cartItem.getBook().getPrice() * quantity;
             }

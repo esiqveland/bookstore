@@ -49,11 +49,17 @@
                 <div>Date: <fmt:formatDate value="${order.createdDate.time}" type="date" dateStyle="short" /></div>
                 <div>Value: ${order.value}</div>
                 <div>Status: <c:out value="${order.statusText}" /></div>
+
                 <div>
-                    <span><a href="editOrder.do?id=${order.id}">Edit</a></span>
-                    <span><a href="deleteOrder.do?id=${order.id}">Delete</a></span>
+                <c:choose>
+                    <c:when test="${order.status == -1}">
+                    </c:when>
+                    <c:otherwise>
+                        <span><a href="editOrder.do?id=${order.id}">Edit</a></span>
+                        <span><a href="deleteOrder.do?id=${order.id}">Delete</a></span>
+                    </c:otherwise>
+                </c:choose>
                 </div>
-                
             </div>
         </c:forEach>
     </div>

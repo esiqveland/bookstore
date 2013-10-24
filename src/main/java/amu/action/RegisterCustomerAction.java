@@ -3,6 +3,9 @@ package amu.action;
 import amu.Mailer;
 import amu.database.CustomerDAO;
 import amu.model.Customer;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +17,18 @@ class RegisterCustomerAction extends HttpServlet implements Action {
     public ActionResponse execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         if (request.getMethod().equals("POST")) {
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey("6Lc8QOkSAAAAABqBZdDu8ksk95Ew57Xacipc4F-w");
+
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+            if (!reCaptchaResponse.isValid()) {
+                return new ActionResponse(ActionResponseType.FORWARD, "registerCustomer");
+            }
+
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.findByEmail(request.getParameter("email"));
 

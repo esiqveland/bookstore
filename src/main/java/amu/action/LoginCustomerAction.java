@@ -2,6 +2,9 @@ package amu.action;
 
 import amu.database.CustomerDAO;
 import amu.model.Customer;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +24,18 @@ class LoginCustomerAction implements Action {
         }
 
         if (request.getMethod().equals("POST")) {
+
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey("6Lc8QOkSAAAAABqBZdDu8ksk95Ew57Xacipc4F-w");
+
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+            if (!reCaptchaResponse.isValid()) {
+                return new ActionResponse(ActionResponseType.FORWARD, "loginCustomer");
+            }
 
             Map<String, String> messages = new HashMap<String, String>();
             request.setAttribute("messages", messages);

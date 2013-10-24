@@ -200,6 +200,7 @@ public class BookListDAO {
     }
 
     public void deleteBooklist(BookList bookList, Customer customer) {
+
         if(!canCustomerDeleteBooklist(bookList, customer)) {
             return;
         }

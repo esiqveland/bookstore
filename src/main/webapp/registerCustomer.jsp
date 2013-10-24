@@ -1,3 +1,5 @@
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <div class="container">
     <h1>Register</h1>
     <c:choose>
@@ -27,9 +29,20 @@
                                 </tr>
                                 <tr>
                                     <td><label for="password">Password</label></td>
-                                    <td><input id="password" name="password" type="text" autocomplete="off" /></td>
+                                    <td><input id="password" name="password" type="password" autocomplete="off" /></td>
                                 </tr>
+                                <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <%
+                                      ReCaptcha c = ReCaptchaFactory.newReCaptcha("6Lc8QOkSAAAAAHI1R4dDPsAQn3Fu_Ap618Y8POYE",
+                                       "6Lc8QOkSAAAAABqBZdDu8ksk95Ew57Xacipc4F-w", false);
+                                      out.print(c.createRecaptchaHtml(null, null));
+                                    %>
+                                </td>
                             </table>
+
                             <div><input type="submit" value="Submit"></div>
                         </form>
                     </div>

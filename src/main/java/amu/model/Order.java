@@ -76,6 +76,9 @@ public class Order {
         return status;
     }
 
+    public boolean isCanceled() {
+        return status == -1;
+    }
     public void setCart(Cart cart) {
         this.cart = cart;
     }

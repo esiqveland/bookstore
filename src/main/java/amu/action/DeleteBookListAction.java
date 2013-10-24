@@ -24,9 +24,9 @@ public class DeleteBookListAction implements Action {
 
         BookListDAO bookListDAO = new BookListDAO();
         BookList bookList = bookListDAO.getBookListById(booklistId);
-
-        bookListDAO.deleteBooklist(bookList, customer);
-
+        if(bookList != null) {
+            bookListDAO.deleteBooklist(bookList, customer);
+        }
         return new ActionResponse(ActionResponseType.REDIRECT, "myBooklists");
 
     }

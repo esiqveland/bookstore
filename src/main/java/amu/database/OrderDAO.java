@@ -123,8 +123,6 @@ public class OrderDAO {
             statement.setInt(2, customerId);
 
             resultSet = statement.executeQuery();
-						
-			System.out.println("SELECT DONE");
 			
 			while (resultSet.next()) {
 				sOrder = new SimpleOrder(resultSet.getInt("id"),

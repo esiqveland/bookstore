@@ -4,6 +4,8 @@ import amu.common.AmuDariaUtils;
 import amu.database.ReviewDAO;
 import amu.model.Customer;
 import amu.model.Review;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,20 @@ public class PostReviewAction implements Action {
         if (customer == null) {
             ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "loginCustomer");
             actionResponse.addParameter("from", "postReview");
+            return actionResponse;
+        }
+
+        String remoteAddr = request.getRemoteAddr();
+        ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+        reCaptcha.setPrivateKey("6Lc8QOkSAAAAABqBZdDu8ksk95Ew57Xacipc4F-w");
+
+        String challenge = request.getParameter("recaptcha_challenge_field");
+        String uresponse = request.getParameter("recaptcha_response_field");
+        ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
+        if (!reCaptchaResponse.isValid()) {
+            ActionResponse actionResponse = new ActionResponse(ActionResponseType.REDIRECT, "viewBook");
+            actionResponse.addParameter("isbn", request.getParameter("isbn"));
             return actionResponse;
         }
 

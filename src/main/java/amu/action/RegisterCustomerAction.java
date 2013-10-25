@@ -39,8 +39,6 @@ class RegisterCustomerAction extends HttpServlet implements Action {
                 customer.setSalt(customerDAO.generateSalt());
                 customer.setPassword(CustomerDAO.hashPassword(request.getParameter("password"), customer.getSalt()));
 
-                System.out.println(customer.getSalt() + " " + customer.getPassword());
-
                 customer.setActivationToken(CustomerDAO.generateActivationCode());
                 customer = customerDAO.register(customer);
                 

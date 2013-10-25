@@ -8457,6 +8457,7 @@ CREATE TABLE `customer` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `password` char(40) NOT NULL DEFAULT '',
+  `salt` varchar(32) NOT NULL,
   `name` varchar(255) NOT NULL,
   `activation_token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -8466,9 +8467,9 @@ CREATE TABLE `customer` (
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 
-INSERT INTO `customer` (`id`, `email`, `password`, `name`, `activation_token`)
+INSERT INTO `customer` (`id`, `email`, `password`,`salt`, `name`, `activation_token`)
 VALUES
-	(1,'test@test.com','A99641EB9A2668C068D279AF786F4661D6244E2D','Test User',NULL);
+	(1,'test@test.com','95A162EACD1704BD12D834DC679765C2BECC2549','lgq614go7f3cp8jjto2e1khas0','Test User',NULL);
 
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;

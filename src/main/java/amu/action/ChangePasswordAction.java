@@ -35,7 +35,9 @@ class ChangePasswordAction implements Action {
 
             // Validation OK, do business logic
             CustomerDAO customerDAO = new CustomerDAO();
-            customer.setPassword(CustomerDAO.hashPassword(password[0]));
+            String salt = customerDAO.generateSalt();
+            customer.setSalt(salt);
+            customer.setPassword(CustomerDAO.hashPassword(password[0],salt));
             if (customerDAO.edit(customer) == false) {
                 messages.add("An error occured.");
                 return new ActionResponse(ActionResponseType.FORWARD, "changePassword");

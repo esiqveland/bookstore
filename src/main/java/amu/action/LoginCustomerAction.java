@@ -47,7 +47,7 @@ class LoginCustomerAction implements Action {
                 values.put("email", request.getParameter("email"));
 
                 if (customer.getActivationToken() == null) {
-                    if (customer.getPassword().equals(CustomerDAO.hashPassword(request.getParameter("password")))) {
+                    if (customer.getPassword().equals(CustomerDAO.hashPassword(request.getParameter("password"),customer.getSalt()))) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("customer", customer);
                         if (ActionFactory.hasKey(request.getParameter("from"))) {

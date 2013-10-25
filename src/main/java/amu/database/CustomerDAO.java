@@ -10,14 +10,15 @@ import java.sql.*;
 import java.util.logging.*;
 import javax.sql.*;
 import javax.xml.bind.DatatypeConverter;
+import java.math.BigInteger;
 
 public class CustomerDAO {
 
-    public static String hashPassword(String plainTextPassword) {
+    public static String hashPassword(String plainTextPassword, String salt) {
         String hashedPassword = null;
         try {
             // Calculate SHA1(password+salt)
-            hashedPassword = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA1").digest((plainTextPassword + Config.SALT).getBytes()));
+            hashedPassword = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA1").digest((plainTextPassword + salt).getBytes()));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -30,6 +31,11 @@ public class CustomerDAO {
         byte bytes[] = new byte[8];
         random.nextBytes(bytes);
         return DatatypeConverter.printHexBinary(bytes);
+    }
+
+    public String generateSalt(){
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 
     public Customer findByEmail(String email) {
@@ -55,6 +61,7 @@ public class CustomerDAO {
                 customer.setId(resultSet.getInt("id"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setPassword(resultSet.getString("password"));
+                customer.setSalt(resultSet.getString("salt"));
                 customer.setName(resultSet.getString("name"));
                 customer.setActivationToken(resultSet.getString("activation_token"));
             }
@@ -74,12 +81,13 @@ public class CustomerDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "UPDATE customer SET email=?, password=?, name=? WHERE id=?";
+            String query = "UPDATE customer SET email=?, password=?, salt=?, name=? WHERE id=?";
             statement = connection.prepareStatement(query);
             statement.setString(1, customer.getEmail());
             statement.setString(2, customer.getPassword());
-            statement.setString(3, customer.getName());
-            statement.setInt(4, customer.getId());
+            statement.setString(3,customer.getSalt());
+            statement.setString(4, customer.getName());
+            statement.setInt(5, customer.getId());
           
             if (statement.executeUpdate() == 0) {
                 return false; // No rows were affected
@@ -104,12 +112,13 @@ public class CustomerDAO {
         try {
             connection = Database.getConnection();
 
-            String query = "INSERT INTO customer (email, password, name, activation_token) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO customer (email, password, salt, name, activation_token) VALUES (?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
             statement.setString(1, customer.getEmail());
             statement.setString(2, customer.getPassword());
-            statement.setString(3, customer.getName());
-            statement.setString(4, customer.getActivationToken());
+            statement.setString(3, customer.getSalt());
+            statement.setString(4, customer.getName());
+            statement.setString(5, customer.getActivationToken());
 
             statement.executeUpdate();
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, "register SQL Query: " + query);
@@ -169,6 +178,7 @@ public class CustomerDAO {
                 customer.setId(resultSet.getInt("id"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setPassword(resultSet.getString("password"));
+                customer.setSalt(resultSet.getString("salt"));
                 customer.setName(resultSet.getString("name"));
                 customer.setActivationToken(resultSet.getString("activation_token"));
             }
@@ -179,5 +189,5 @@ public class CustomerDAO {
         }
         return customer;
     }
- 
+
 }

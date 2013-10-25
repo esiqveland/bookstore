@@ -10,10 +10,19 @@ public class Customer implements Serializable {
     private String name;
     private String activationToken = null;
 
+    public String getSalt() {
+        return salt;
+    }
+
+    private String salt;
+
     public int getId() {
         return id;
     }
 
+    public void setSalt(String salt){
+        this.salt = salt;
+    }
     public void setId(int id) {
         this.id = id;
     }
